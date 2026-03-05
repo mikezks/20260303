@@ -9,16 +9,21 @@ import { ClickLocal } from "@flight-demo/shared/navigation";
 // Step 3: Field Logic: Validators, Readonly, Disabled, Field Metadata
 export const passengerSchema = schema<Passenger>(passengerPath => {
   required(passengerPath.firstName, {
-    message: 'The Firstname is mandatory.'
+    message: 'Either Firstname or Lastname needs to have a value.',
+    when: ctx => !ctx.valueOf(passengerPath.name)
   });
-  validate(passengerPath.name, ({ value }) =>
+  required(passengerPath.name, {
+    message: 'Either Firstname or Lastname needs to have a value.',
+    when: ctx => !ctx.valueOf(passengerPath.firstName)
+  });
+  /* validate(passengerPath.name, ({ value }) =>
     ['Sorglos', 'Müller', 'Schmidt'].includes(value())
       ? null
       : {
         kind: 'forbiddenLastname',
         message: 'This Lastname is not allowed.'
       }
-  );
+  ); */
 });
 
 
