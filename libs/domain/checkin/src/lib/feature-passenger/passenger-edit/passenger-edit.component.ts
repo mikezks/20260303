@@ -16,18 +16,17 @@ import { initialPassenger, Passenger } from '../../logic-passenger/model/passeng
   templateUrl: './passenger-edit.component.html'
 })
 export class PassengerEditComponent {
-  private readonly passenger = signal(initialPassenger);
-  protected readonly editForm = form(this.passenger);
-
   readonly id = input(0, { transform: numberAttribute });
+
   protected readonly passengerResource = httpResource<Passenger>(() => ({
     url: 'https://demo.angulararchitects.io/api/passenger',
     params: { id: this.id() }
   }), { defaultValue: initialPassenger });
 
+  protected readonly editForm = form(this.passengerResource.value);
+  
   protected save(): void {
     console.log({
-      dataModel: this.passenger(),
       from: this.editForm().value(),
       resource: this.passengerResource.value()
     });
